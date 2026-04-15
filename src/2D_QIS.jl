@@ -220,45 +220,6 @@ function Diff_2_8_y(h, sites)
     return out
 end
 
-function mps_to_array_2D(mps)
-    R = length(mps)
-    plot_tensor = array(prod(mps[:]))
-    plot_tensor = reshape(plot_tensor, ntuple(i -> 2, 2*R)...)
-    perm = Vector{Int}(undef, 2*R)
-    for i in 1:R
-        perm[R + i] = 2*R - (2 * i - 1)
-        perm[i] = 2*R - (2 * i - 2)
-    end
-    plot_tensor = permutedims(plot_tensor, perm)
-    return reshape(plot_tensor, 2^R, 2^R)
-end
-
-function plot_mps(mps; grid_size=8, trunc=1e-5, save_name="")
-    R = length(mps)
-    grid_size = min(grid_size, R)
-    plot_tensor = array(prod(mps[:]))
-    plot_tensor = reshape(plot_tensor, ntuple(i -> 2, 2*R)...)
-    perm = Vector{Int}(undef, 2*R)
-    for i in 1:R
-        perm[R + i] = 2*R - (2 * i - 1)
-        perm[i] = 2*R - (2 * i - 2)
-    end
-    plot_tensor = permutedims(plot_tensor, perm)
-    plot_tensor = reshape(plot_tensor, 2^R, 2^R)
-    dummy = 1:2^(R - grid_size):2^R
-    mps_vals = plot_tensor[dummy,dummy]
-    mps_vals[abs.(mps_vals) .< trunc] .= 0.
-    xvals = collect(range(0, 1, 2^grid_size))
-    yvals = collect(range(0, 1, 2^grid_size))
-        
-    if save_name == ""
-        contour(xvals, yvals, mps_vals, fill=true)
-    else
-        p = contour(xvals, yvals, mps_vals, fill=true)
-        savefig(p, save_name)
-    end
-end
-
 function find_max_on_2D_grid(func, R, x_min=0., x_max=1., y_min=0., y_max=1.)
     num_points_per_dim = 2^R
     x_range = range(x_min, x_max, num_points_per_dim)
