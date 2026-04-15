@@ -16,6 +16,7 @@
 /test/results_*.dat
 /test/deps
 
+*.h5
 *.expmap
 *.exe
 *.dll
