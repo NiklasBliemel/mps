@@ -1,3 +1,8 @@
+using Plots
+using ITensorMPS
+using ITensors
+
+
 function mps_to_array_2D(mps)
     R = length(mps)
     plot_tensor = array(prod(mps[:])) # contract all cores of the MPS into a single tensor
